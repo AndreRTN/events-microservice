@@ -7,11 +7,12 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./data:/app/src/prisma
+      - ./data:/app/data
     environment:
       - NODE_ENV=development
       - API_KEY=your-secure-api-key-here
-      - DATABASE_URL=file:./dev.db
+      - DATABASE_URL=file:./data/dev.db
+      - SEED_EVENTS_COUNT=1000
       - NEXTAUTH_URL=http://localhost:3000
       - NEXTAUTH_SECRET=your-nextauth-secret-here
     restart: unless-stopped

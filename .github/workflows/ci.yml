@@ -39,6 +39,7 @@ jobs:
       env:
         NODE_ENV: test
         API_KEY: test-api-key
+        CI: true
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3

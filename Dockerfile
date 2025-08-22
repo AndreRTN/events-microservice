@@ -13,9 +13,6 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 RUN npx prisma generate
-RUN npx prisma db push
-RUN npx prisma db seed
-
 RUN npm run build
 
 FROM base AS runner
@@ -32,8 +29,9 @@ COPY --from=builder /app/public ./public
 
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=deps /app/node_modules ./node_modules
 
-RUN chown -R nextjs:nodejs /app
+RUN mkdir -p /app/data && chown -R nextjs:nodejs /app
 
 USER nextjs
 
