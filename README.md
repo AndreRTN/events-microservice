@@ -53,7 +53,7 @@ npm run dev
 4. **Execute com Docker:**
 ```bash
 # Build da imagem
-./docker-build.sh
+docker build -t events-microservice:latest .
 
 # Execute com docker-compose
 docker-compose up
