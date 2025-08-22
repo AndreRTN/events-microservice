@@ -36,6 +36,9 @@ jobs:
 
     - name: Run tests
       run: npm run test:coverage
+      env:
+        NODE_ENV: test
+        API_KEY: test-api-key
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
@@ -47,6 +50,9 @@ jobs:
 
     - name: Build application
       run: npm run build
+      env:
+        NODE_ENV: production
+        API_KEY: dummy-key-for-build
 
     - name: Validate Prisma schema
       run: npx prisma validate

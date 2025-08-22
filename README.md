@@ -1,5 +1,6 @@
 # Events Microservice
 
+
 Microserviço para coleta e processamento de eventos em tempo real, desenvolvido com Next.js e Prisma.
 
 ## Como Rodar
@@ -8,9 +9,24 @@ Microserviço para coleta e processamento de eventos em tempo real, desenvolvido
 - Node.js 18+ 
 - npm ou yarn
 
+### Variáveis de Ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto:
+
+```bash
+# API Key para autenticação
+API_KEY=sua-api-key-secreta
+
+# Configuração do banco (opcional para SQLite)
+DATABASE_URL="file:./dev.db"
+
+# Ambiente (development, test, production)
+NODE_ENV=development
+```
+
 ### Instalação e Execução
 
-1. **Clone e instale depend�ncias:**
+1. **Clone e instale dependências:**
 ```bash
 git clone 
 cd events-microservice
@@ -58,7 +74,7 @@ npm run test:coverage
 
 ### Teste Manual da API
 
-**1. Teste de sa�de:**
+**1. Teste de saúde:**
 ```bash
 curl http://localhost:3000/api/health
 ```
@@ -123,26 +139,26 @@ src/
 **Prisma + SQLite:**
 - ORM type-safe para desenvolvimento
 - SQLite para simplicidade (pode migrar para PostgreSQL)
-- Migrations autom�ticas
+- Migrations automáticas
 
 **Arquitetura em Camadas:**
 - **Controllers (API Routes):** Validação e autenticação
-- **Services:** Lógica de neg�cio e regras
+- **Services:** Lógica de negócio e regras
 - **Repositories:** Abstração do banco de dados
 - **Models:** Tipos TypeScript e validações
 
-**Autentica��o por API Key:**
+**Autenticação por API Key:**
 - Simples e eficaz para APIs internas
 - Middleware reutilizável
 - Facilmente extensível para JWT/OAuth
 
-**Sistema de M�tricas:**
+**Sistema de Métricas:**
 - Contadores em memória para performance
 - Métricas básicas de API e eventos
 - Preparado para integração com Prometheus
 
 
-## � Limitações
+##  Limitações
 
 ### Performance
 - **SQLite:** Adequado para desenvolvimento, limitado em produção
@@ -154,7 +170,7 @@ src/
 - **Sem rate limiting:** API pode ser sobrecarregada
 - **Processamento síncrono:** Eventos processados um a um
 
-## =' Scripts Dispon�veis
+## Scripts Disponíveis
 
 ```bash
 npm run dev          # Desenvolvimento com hot reload
