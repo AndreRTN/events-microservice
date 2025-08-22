@@ -56,7 +56,7 @@ npm run dev
 docker build -t events-microservice:latest .
 
 # Execute com docker-compose
-docker-compose up
+docker compose up
 ```
 
 A aplicação estará disponível em `http://localhost:3000`
