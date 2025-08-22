@@ -103,8 +103,14 @@ jobs:
       with:
         languages: javascript
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+    - name: Generate Prisma client
+      run: npm run db:generate
+
+    - name: Manual build for CodeQL
+      run: npm run build
+      env:
+        NODE_ENV: production
+        API_KEY: dummy-key-for-build
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
