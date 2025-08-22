@@ -17,7 +17,7 @@ export class EventRepository {
         email: event.email,
         site: event.site,
         timestamp: new Date(event.timestamp),
-        metadata: event.metadata || {}
+        metadata: (event.metadata as any) || {}
       }
     })
   }

@@ -7,7 +7,7 @@ describe('validateEvent', () => {
     type: 'sent',
     email: 'test@example.com',
     site: 'example.com',
-    timestamp: new Date(),
+    timestamp: new Date().toISOString(),
     metadata: { campaign: 'test' }
   }
 
@@ -25,7 +25,7 @@ describe('validateEvent', () => {
 
   it('should return error for missing type', () => {
     const event = { ...validEvent }
-    delete (event as any).type
+    delete (event as Record<string, unknown>).type
     const result = validateEvent(event)
     expect(result).toContain('Event missing required fields')
   })
@@ -44,7 +44,7 @@ describe('validateEvent', () => {
 
   it('should return error for missing timestamp', () => {
     const event = { ...validEvent }
-    delete (event as any).timestamp
+    delete (event as Record<string, unknown>).timestamp
     const result = validateEvent(event)
     expect(result).toContain('Event missing required fields')
   })
@@ -67,12 +67,12 @@ describe('validateEvent', () => {
 
   it('should handle null event', () => {
     const result = validateEvent(null)
-    expect(result).toContain('Event missing required fields')
+    expect(result).toContain('Event must be an object')
   })
 
   it('should handle undefined event', () => {
     const result = validateEvent(undefined)
-    expect(result).toContain('Event missing required fields')
+    expect(result).toContain('Event must be an object')
   })
 
   it('should handle empty object', () => {
@@ -103,7 +103,7 @@ describe('validateEvent', () => {
 
   it('should validate event without metadata', () => {
     const event = { ...validEvent }
-    delete (event as any).metadata
+    delete (event as Record<string, unknown>).metadata
     const result = validateEvent(event)
     expect(result).toBeNull()
   })

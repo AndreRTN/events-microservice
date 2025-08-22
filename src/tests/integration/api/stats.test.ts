@@ -3,7 +3,7 @@ import { prisma } from '../../setup'
 
 // Mock the production prisma to use our test instance
 jest.mock('../../../lib/prisma', () => ({
-  prisma: require('../../setup').prisma
+  prisma
 }))
 
 import { GET } from '../../../app/api/stats/daily/route'
@@ -176,8 +176,8 @@ describe('/api/stats/daily', () => {
       expect(response.status).toBe(200)
       expect(data.stats).toHaveLength(2)
 
-      const exampleComStat = data.stats.find((s: any) => s.site === 'example.com')
-      const testComStat = data.stats.find((s: any) => s.site === 'test.com')
+      const exampleComStat = data.stats.find((s: { site: string }) => s.site === 'example.com')
+      const testComStat = data.stats.find((s: { site: string }) => s.site === 'test.com')
 
       expect(exampleComStat).toBeTruthy()
       expect(exampleComStat.sent).toBe(2)

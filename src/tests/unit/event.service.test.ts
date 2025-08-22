@@ -22,7 +22,7 @@ describe('EventService', () => {
             type: 'sent',
             email: 'test@example.com',
             site: 'example.com',
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             metadata: { campaign: 'test' }
           }
         ]
@@ -47,7 +47,7 @@ describe('EventService', () => {
             type: 'sent',
             email: 'test@example.com',
             site: 'example.com',
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             metadata: { campaign: 'test' }
           }
         ]
@@ -68,12 +68,12 @@ describe('EventService', () => {
         events: [
           {
             id: '',
-            type: 'invalid',
+            type: 'invalid' as any,
             email: 'invalid-email',
             site: '',
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             metadata: {}
-          } as EventData
+          } as any
         ]
       }
 
@@ -93,7 +93,7 @@ describe('EventService', () => {
             type: 'sent',
             email: 'test@example.com',
             site: 'example.com',
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             metadata: { campaign: 'test' }
           }
         ]
@@ -111,7 +111,7 @@ describe('EventService', () => {
     })
 
     it('should throw error for invalid request format', async () => {
-      const request = { events: null } as any
+      const request = { events: null } as unknown as EventRequest
 
       await expect(eventService.processEvents(request)).rejects.toThrow(
         'Invalid request: events array is required'
@@ -126,23 +126,23 @@ describe('EventService', () => {
             type: 'sent',
             email: 'test@example.com',
             site: 'example.com',
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             metadata: { campaign: 'test' }
           },
           {
             id: '',
-            type: 'invalid',
+            type: 'invalid' as any,
             email: 'invalid-email',
             site: '',
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             metadata: {}
-          } as EventData,
+          } as any,
           {
             id: 'event-3',
             type: 'open',
             email: 'test2@example.com',
             site: 'example.com',
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             metadata: { campaign: 'test' }
           }
         ]

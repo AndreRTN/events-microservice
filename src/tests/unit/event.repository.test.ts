@@ -16,7 +16,7 @@ describe('EventRepository', () => {
         type: 'sent',
         email: 'test@example.com',
         site: 'example.com',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         metadata: { campaign: 'test' }
       }
 
@@ -27,7 +27,7 @@ describe('EventRepository', () => {
           email: eventData.email,
           site: eventData.site,
           timestamp: eventData.timestamp,
-          metadata: eventData.metadata
+          metadata: eventData.metadata as any
         }
       })
 
@@ -48,7 +48,7 @@ describe('EventRepository', () => {
         type: 'open',
         email: 'test@example.com',
         site: 'example.com',
-        timestamp: new Date('2024-01-01T12:00:00Z'),
+        timestamp: new Date('2024-01-01T12:00:00Z').toISOString(),
         metadata: { campaign: 'test', browser: 'chrome' }
       }
 
@@ -63,7 +63,7 @@ describe('EventRepository', () => {
       expect(createdEvent?.type).toBe(eventData.type)
       expect(createdEvent?.email).toBe(eventData.email)
       expect(createdEvent?.site).toBe(eventData.site)
-      expect(createdEvent?.timestamp).toEqual(eventData.timestamp)
+      expect(createdEvent?.timestamp).toEqual(new Date(eventData.timestamp))
       expect(createdEvent?.metadata).toEqual(eventData.metadata)
     })
 
@@ -73,8 +73,8 @@ describe('EventRepository', () => {
         type: 'click',
         email: 'test@example.com',
         site: 'example.com',
-        timestamp: new Date(),
-        metadata: undefined as any
+        timestamp: new Date().toISOString(),
+        metadata: undefined as unknown as Record<string, unknown>
       }
 
       await eventRepository.create(eventData)
@@ -93,7 +93,7 @@ describe('EventRepository', () => {
         type: 'sent',
         email: 'test@example.com',
         site: 'example.com',
-        timestamp: '2024-01-01T12:00:00Z' as any,
+        timestamp: '2024-01-01T12:00:00Z',
         metadata: { campaign: 'test' }
       }
 
@@ -113,7 +113,7 @@ describe('EventRepository', () => {
         type: 'sent',
         email: 'test@example.com',
         site: 'example.com',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         metadata: { campaign: 'test' }
       }
 

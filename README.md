@@ -55,7 +55,7 @@ npm run dev
 # Build da imagem
 docker build -t events-microservice:latest .
 
-# Execute com docker-compose
+
 docker compose up
 ```
 

@@ -3,54 +3,40 @@ import { DailyStats, GeneralStats } from '../../lib/types'
 
 export class StatsRepository {
   async getDailyStats(site?: string, from?: string, to?: string): Promise<DailyStats[]> {
-    const conditions: any[] = []
-    let whereClause = ''
+    const where: any = {}
     
-    if (site || from || to) {
-      const conditionStrings: string[] = []
-      if (site) {
-        conditions.push(site)
-        conditionStrings.push('site = ?')
-      }
+    if (site) {
+      where.site = site
+    }
+    if (from || to) {
+      where.timestamp = {}
       if (from) {
-        conditions.push(new Date(from).getTime())
-        conditionStrings.push('timestamp >= ?')
+        where.timestamp.gte = new Date(from)
       }
       if (to) {
-        conditions.push(new Date(to + ' 23:59:59').getTime())
-        conditionStrings.push('timestamp <= ?')
+        where.timestamp.lte = new Date(to + 'T23:59:59.999Z')
       }
-      whereClause = `WHERE ${conditionStrings.join(' AND ')}`
     }
 
-    const query = `
-      SELECT 
-        date(timestamp / 1000, 'unixepoch') as date,
-        site,
-        type,
-        COUNT(*) as count
-      FROM "Event" 
-      ${whereClause}
-      GROUP BY date(timestamp / 1000, 'unixepoch'), site, type
-      ORDER BY date DESC, site
-    `
-
-    const dailyStats = await prisma.$queryRawUnsafe<Array<{
-      date: string
-      site: string
-      type: string
-      count: bigint
-    }>>(query, ...conditions)
+    const events = await prisma.event.findMany({
+      where,
+      select: {
+        site: true,
+        type: true,
+        timestamp: true
+      }
+    })
 
     const groupedStats = new Map<string, DailyStats>()
 
-    dailyStats.forEach(row => {
-      const key = `${row.date}-${row.site}`
+    events.forEach(event => {
+      const date = event.timestamp.toISOString().split('T')[0]
+      const key = `${date}-${event.site}`
       
       if (!groupedStats.has(key)) {
         groupedStats.set(key, {
-          date: row.date,
-          site: row.site,
+          date,
+          site: event.site,
           sent: 0,
           open: 0,
           click: 0
@@ -58,56 +44,47 @@ export class StatsRepository {
       }
 
       const stat = groupedStats.get(key)!
-      stat[row.type as keyof Pick<DailyStats, 'sent' | 'open' | 'click'>] = Number(row.count)
+      stat[event.type as keyof Pick<DailyStats, 'sent' | 'open' | 'click'>]++
     })
 
-    return Array.from(groupedStats.values())
+    return Array.from(groupedStats.values()).sort((a, b) => {
+      if (a.date !== b.date) {
+        return b.date.localeCompare(a.date) // DESC by date
+      }
+      return a.site.localeCompare(b.site) // ASC by site
+    })
   }
 
   async getGeneralStats(site?: string, from?: string, to?: string): Promise<GeneralStats[]> {
-    const conditions: any[] = []
-    let whereClause = ''
+    const where: any = {}
     
-    if (site || from || to) {
-      const conditionStrings: string[] = []
-      if (site) {
-        conditions.push(site)
-        conditionStrings.push('site = ?')
-      }
+    if (site) {
+      where.site = site
+    }
+    if (from || to) {
+      where.timestamp = {}
       if (from) {
-        conditions.push(new Date(from).getTime())
-        conditionStrings.push('timestamp >= ?')
+        where.timestamp.gte = new Date(from)
       }
       if (to) {
-        conditions.push(new Date(to + ' 23:59:59').getTime())
-        conditionStrings.push('timestamp <= ?')
+        where.timestamp.lte = new Date(to + 'T23:59:59.999Z')
       }
-      whereClause = `WHERE ${conditionStrings.join(' AND ')}`
     }
 
-    const query = `
-      SELECT 
-        site,
-        type,
-        COUNT(*) as count
-      FROM "Event" 
-      ${whereClause}
-      GROUP BY site, type
-      ORDER BY site
-    `
-
-    const stats = await prisma.$queryRawUnsafe<Array<{
-      site: string
-      type: string
-      count: bigint
-    }>>(query, ...conditions)
+    const events = await prisma.event.findMany({
+      where,
+      select: {
+        site: true,
+        type: true
+      }
+    })
 
     const groupedStats = new Map<string, GeneralStats>()
 
-    stats.forEach(row => {
-      if (!groupedStats.has(row.site)) {
-        groupedStats.set(row.site, {
-          site: row.site,
+    events.forEach(event => {
+      if (!groupedStats.has(event.site)) {
+        groupedStats.set(event.site, {
+          site: event.site,
           sent: 0,
           open: 0,
           click: 0,
@@ -116,8 +93,8 @@ export class StatsRepository {
         })
       }
 
-      const stat = groupedStats.get(row.site)!
-      stat[row.type as keyof Pick<GeneralStats, 'sent' | 'open' | 'click'>] = Number(row.count)
+      const stat = groupedStats.get(event.site)!
+      stat[event.type as keyof Pick<GeneralStats, 'sent' | 'open' | 'click'>]++
     })
 
     // Calculate rates
@@ -126,6 +103,6 @@ export class StatsRepository {
       stat.clickRate = stat.sent > 0 ? Math.round((stat.click / stat.sent) * 100 * 100) / 100 : 0
     })
 
-    return Array.from(groupedStats.values())
+    return Array.from(groupedStats.values()).sort((a, b) => a.site.localeCompare(b.site))
   }
 }

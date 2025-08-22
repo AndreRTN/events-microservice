@@ -8,7 +8,7 @@ export interface EventData {
   email: string
   site: string
   timestamp: string
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
 }
 
 export interface EventResponse {
