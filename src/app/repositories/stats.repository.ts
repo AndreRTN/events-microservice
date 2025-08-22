@@ -1,9 +1,10 @@
 import { prisma } from '../../lib/prisma'
 import { DailyStats, GeneralStats } from '../../lib/types'
+import { Prisma } from '@prisma/client'
 
 export class StatsRepository {
   async getDailyStats(site?: string, from?: string, to?: string): Promise<DailyStats[]> {
-    const where: any = {}
+    const where: Prisma.EventWhereInput = {}
     
     if (site) {
       where.site = site
@@ -56,7 +57,7 @@ export class StatsRepository {
   }
 
   async getGeneralStats(site?: string, from?: string, to?: string): Promise<GeneralStats[]> {
-    const where: any = {}
+    const where: Prisma.EventWhereInput = {}
     
     if (site) {
       where.site = site

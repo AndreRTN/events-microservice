@@ -27,7 +27,7 @@ describe('EventRepository', () => {
           email: eventData.email,
           site: eventData.site,
           timestamp: eventData.timestamp,
-          metadata: eventData.metadata as any
+          metadata: eventData.metadata
         }
       })
 

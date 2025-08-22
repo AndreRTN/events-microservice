@@ -68,12 +68,12 @@ describe('EventService', () => {
         events: [
           {
             id: '',
-            type: 'invalid' as any,
+            type: 'invalid' as 'sent' | 'open' | 'click',
             email: 'invalid-email',
             site: '',
             timestamp: new Date().toISOString(),
             metadata: {}
-          } as any
+          } as EventData
         ]
       }
 
@@ -131,12 +131,12 @@ describe('EventService', () => {
           },
           {
             id: '',
-            type: 'invalid' as any,
+            type: 'invalid' as 'sent' | 'open' | 'click',
             email: 'invalid-email',
             site: '',
             timestamp: new Date().toISOString(),
             metadata: {}
-          } as any,
+          } as EventData,
           {
             id: 'event-3',
             type: 'open',

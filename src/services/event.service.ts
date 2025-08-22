@@ -1,5 +1,5 @@
 import { EventRepository } from '../app/repositories/event.repository'
-import { EventRequest, EventResponse, EventData } from '../lib/types'
+import { EventRequest, EventResponse } from '../lib/types'
 import { validateEvent } from '../lib/validators/event.validator'
 
 export class EventService {

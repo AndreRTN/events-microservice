@@ -1,5 +1,6 @@
 import { prisma } from '../../lib/prisma'
 import { EventData } from '../../lib/types'
+import { Prisma } from '@prisma/client'
 
 export class EventRepository {
   async exists(eventId: string): Promise<boolean> {
@@ -17,7 +18,7 @@ export class EventRepository {
         email: event.email,
         site: event.site,
         timestamp: new Date(event.timestamp),
-        metadata: (event.metadata as any) || {}
+        metadata: (event.metadata || {}) as Prisma.InputJsonValue
       }
     })
   }

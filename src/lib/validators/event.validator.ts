@@ -1,4 +1,3 @@
-import { EventData } from '../types'
 
 const VALID_EVENT_TYPES = ['sent', 'open', 'click']
 
