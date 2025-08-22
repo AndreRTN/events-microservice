@@ -101,14 +101,16 @@ curl -X POST http://localhost:3000/api/events \
   }'
 ```
 
-**3. Consultar estatísticas:**
+**3. Consultar estatísticas (requer API key):**
 ```bash
-curl "http://localhost:3000/api/stats?site=example.com&from=2024-01-01&to=2024-01-31"
+curl "http://localhost:3000/api/stats?site=example.com&from=2024-01-01&to=2024-01-31" \
+  -H "X-API-Key: your-api-key"
 ```
 
-**4. Estatísticas diárias:**
+**4. Estatísticas diárias (requer API key):**
 ```bash
-curl "http://localhost:3000/api/stats/daily?site=example.com&from=2024-01-01&to=2024-01-31"
+curl "http://localhost:3000/api/stats/daily?site=example.com&from=2024-01-01&to=2024-01-31" \
+  -H "X-API-Key: your-api-key"
 ```
 
 **5. Métricas do sistema:**

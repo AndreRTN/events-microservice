@@ -28,3 +28,16 @@ export interface DailyStats {
 export interface DailyStatsResponse {
   stats: DailyStats[]
 }
+
+export interface GeneralStats {
+  site: string
+  sent: number
+  open: number
+  click: number
+  openRate: number
+  clickRate: number
+}
+
+export interface GeneralStatsResponse {
+  stats: GeneralStats[]
+}

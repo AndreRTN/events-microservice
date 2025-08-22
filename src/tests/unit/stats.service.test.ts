@@ -37,7 +37,7 @@ describe('StatsService', () => {
       const result = await statsService.getDailyStats()
 
       expect(result).toEqual({ stats: mockStats })
-      expect(mockStatsRepository.getDailyStats).toHaveBeenCalledWith()
+      expect(mockStatsRepository.getDailyStats).toHaveBeenCalledWith(undefined, undefined, undefined)
     })
 
     it('should return empty stats when no data available', async () => {
@@ -46,14 +46,14 @@ describe('StatsService', () => {
       const result = await statsService.getDailyStats()
 
       expect(result).toEqual({ stats: [] })
-      expect(mockStatsRepository.getDailyStats).toHaveBeenCalledWith()
+      expect(mockStatsRepository.getDailyStats).toHaveBeenCalledWith(undefined, undefined, undefined)
     })
 
     it('should handle repository errors', async () => {
       mockStatsRepository.getDailyStats.mockRejectedValue(new Error('Database error'))
 
       await expect(statsService.getDailyStats()).rejects.toThrow('Database error')
-      expect(mockStatsRepository.getDailyStats).toHaveBeenCalledWith()
+      expect(mockStatsRepository.getDailyStats).toHaveBeenCalledWith(undefined, undefined, undefined)
     })
   })
 })
