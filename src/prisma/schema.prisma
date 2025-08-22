@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Event {
+  id        String   @id
+  type      String   // sent, open, click
+  email     String
+  site      String
+  timestamp DateTime
+  metadata  Json
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([id])
+  @@index([email, site])
+  @@index([type])
+}
